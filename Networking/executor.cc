@@ -13,7 +13,7 @@ using std::endl;
 int main(void) {
 	cout << "Execute something" << endl;
 
-
+	SocketsExamples se;
 
 	return 0;
 }
