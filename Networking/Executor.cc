@@ -5,11 +5,15 @@
  *      Author: tomek
  */
 #include <iostream>
+#include "socketsexamples.h"
 
-using namespace std;
+using std::cout;
+using std::endl;
 
 int main(void) {
 	cout << "Execute something" << endl;
+
+
 
 	return 0;
 }
