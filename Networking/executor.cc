@@ -16,7 +16,8 @@ int main(void) {
   SocketsExamples se;
 
   // Start HTTP basic client
-  se.runBasicHttpClient();
+  //se.runBasicHttpClient();
+  se.runBasicHttpServer();
 
   return 0;
 }
