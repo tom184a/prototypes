@@ -6,8 +6,13 @@
  */
 #include "socketsexamples.h"
 
-void SocketsExamples::runBasicHttpClient() const {
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <string.h>
+#include <stdio.h>
 
+void SocketsExamples::runBasicHttpClient() const {
+  printf("OK");
 }
 
 

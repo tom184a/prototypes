@@ -11,9 +11,12 @@ using std::cout;
 using std::endl;
 
 int main(void) {
-	cout << "Execute something" << endl;
+	cout << "Executing something" << endl;
 
-	SocketsExamples se;
+  SocketsExamples se;
+
+  // Start HTTP basic client
+  se.runBasicHttpClient();
 
 	return 0;
 }
