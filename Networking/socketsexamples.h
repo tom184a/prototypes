@@ -10,7 +10,7 @@
 
 class SocketsExamples {
 public:
-	void runBasicHttpClient() const;
+  void runBasicHttpClient() const;
 };
 
 #endif /* SOCKETSEXAMPLES_H_ */
