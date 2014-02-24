@@ -40,7 +40,7 @@ void SocketsExamples::runBasicHttpClient() const {
   }
 
   // Sending HTTP request to: www.google.com
-  if(write(sockfd, http_get_request, sizeof(http_get_request)) < 0) {
+  if(write(sockfd, http_get_request, strlen(http_get_request)*sizeof(http_get_request)) < 0) {
     perror("Cannot send data through the given socket");
     exit(1);
   }
