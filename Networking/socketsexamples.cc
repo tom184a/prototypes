@@ -137,6 +137,41 @@ void SocketsExamples::runBasicHttpServer() const {
   }
 }
 
+static const char REMOTE_ADDR[] = "127.0.0.1";
+
+void SocketsExamples::runSimpleUdpClient(short localPort, short remotePort) const {
+  struct sockaddr_in remote_addr;
+  int sockfd;
+  char rcvBuffer[kB];
+  char sndBuffer[kB];
+
+
+  if((sockfd = socket(PF_INET, SOCK_DGRAM, 0)) < 0) {
+    perror("Cannot open a socket");
+    exit(1);
+  }
+
+  memset(&remote_addr, 0, sizeof(remote_addr));
+  remote_addr.sin_family = AF_INET;
+  remote_addr.sin_port = htons(remotePort);
+  inet_pton(AF_INET, REMOTE_ADDR, &remote_addr.sin_addr);
+
+  while(fgets(sndBuffer, kB, stdin) != NULL) {
+    sendto(sockfd, sndBuffer, strlen(sndBuffer), 0, (struct sockaddr *)&remote_addr, sizeof(remote_addr));
+    int n = recvfrom(sockfd, rcvBuffer,kB, 0, NULL, NULL);
+    rcvBuffer[n] = '\0';
+    fputs(rcvBuffer, stdout);
+  }
+}
+
+void SocketsExamples::runSimpleUdpServer(short localPort, short remotePort) const {
+  struct sockaddr_in srv_addr, clt_addr;
+  int sockfd;
+
+  //TODO Need to be implemented
+  //if((sockfd = socket())
+}
+
 
 
 
