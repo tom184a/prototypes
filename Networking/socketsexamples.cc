@@ -78,8 +78,8 @@ void SocketsExamples::runBasicHttpServer() const {
   }
 
   if(setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes)) < 0) {
-	  perror("SO_REUSEADDR option cannot be set");
-	  exit(1);
+    perror("SO_REUSEADDR option cannot be set");
+    exit(1);
   }
 
   if(bind(sockfd, (struct sockaddr *)&srv_addr, sizeof(srv_addr)) < 0) {
