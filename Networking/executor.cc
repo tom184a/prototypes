@@ -6,6 +6,7 @@
  */
 #include <iostream>
 #include "socketsexamples.h"
+#include "stuffs.h"
 
 using std::cout;
 using std::endl;
@@ -14,10 +15,11 @@ int main(void) {
   cout << "Executing something" << endl;
 
   SocketsExamples se;
+  Stuffs sf;
 
-  // Start HTTP basic client
   //se.runBasicHttpClient();
-  se.runBasicHttpServer();
+  //se.runBasicHttpServer();
+  sf.doSth();
 
   return 0;
 }
