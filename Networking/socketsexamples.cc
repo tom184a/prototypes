@@ -58,7 +58,7 @@ static const short SERVICE_PORT = 5050;
 static const short MAX_BACKLOG_COUNT = 5;
 
 void SocketsExamples::runBasicHttpServer() const {
-  int sockfd, clntsockfd, read_bytes;
+  int sockfd, clntsockfd, read_bytes, yes = 1;
   struct sockaddr_in srv_addr, clnt_addr;
   char *time_str;
   time_t time_sec;
@@ -75,6 +75,11 @@ void SocketsExamples::runBasicHttpServer() const {
   if((sockfd = socket(PF_INET, SOCK_STREAM, 0)) < 0) {
     perror("Cannot open a socket");
     exit(1);
+  }
+
+  if(setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes)) < 0) {
+	  perror("SO_REUSEADDR option cannot be set");
+	  exit(1);
   }
 
   if(bind(sockfd, (struct sockaddr *)&srv_addr, sizeof(srv_addr)) < 0) {
