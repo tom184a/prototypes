@@ -14,6 +14,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <time.h>
+#include <signal.h>
 
 static const int kB = 1024*sizeof(char);
 static const short HTTP_PORT = 80;
@@ -56,9 +57,17 @@ void SocketsExamples::runBasicHttpClient() const {
 
 static const short SERVICE_PORT = 5050;
 static const short MAX_BACKLOG_COUNT = 5;
+static int sockfd, clntsockfd;
+
+static void closeHandler(int sig) {
+  printf("server down...\n");
+  close(sockfd);
+  close(clntsockfd);
+  exit(0);
+}
 
 void SocketsExamples::runBasicHttpServer() const {
-  int sockfd, clntsockfd, read_bytes, yes = 1;
+  int read_bytes, yes = 1;
   struct sockaddr_in srv_addr, clnt_addr;
   char *time_str;
   time_t time_sec;
@@ -71,6 +80,21 @@ void SocketsExamples::runBasicHttpServer() const {
   srv_addr.sin_family = AF_INET;
   srv_addr.sin_port = htons(SERVICE_PORT);
   srv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
+
+  if(signal(SIGINT, closeHandler) == SIG_ERR) {
+    perror("Cannot register signal handler");
+    exit(1);
+  }
+
+  if(signal(SIGTERM, closeHandler) == SIG_ERR) {
+    perror("Cannot register signal handler");
+    exit(1);
+  }
+
+  if(signal(SIGHUP, closeHandler) == SIG_ERR) {
+    perror("Cannot register signal handler");
+    exit(1);
+  }
 
   if((sockfd = socket(PF_INET, SOCK_STREAM, 0)) < 0) {
     perror("Cannot open a socket");
@@ -92,7 +116,7 @@ void SocketsExamples::runBasicHttpServer() const {
     exit(1);
   }
 
-  printf("Server is listening on port: %d", SERVICE_PORT);
+
   // Infinite loop
   while(true) {
     if((clntsockfd = accept(sockfd, (struct sockaddr *)&clnt_addr, &clnt_size)) < 0) { // Very wired API
