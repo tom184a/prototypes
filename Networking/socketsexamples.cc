@@ -139,7 +139,7 @@ void SocketsExamples::runBasicHttpServer() const {
 
 static const char REMOTE_ADDR[] = "127.0.0.1";
 
-void SocketsExamples::runSimpleUdpClient(short localPort, short remotePort) const {
+void SocketsExamples::runSimpleUdpClient(short remotePort) const {
   struct sockaddr_in remote_addr;
   int sockfd;
   char rcvBuffer[kB];
@@ -164,12 +164,42 @@ void SocketsExamples::runSimpleUdpClient(short localPort, short remotePort) cons
   }
 }
 
-void SocketsExamples::runSimpleUdpServer(short localPort, short remotePort) const {
+void SocketsExamples::runSimpleUdpServer(short localPort) const {
   struct sockaddr_in srv_addr, clt_addr;
   int sockfd;
 
-  //TODO Need to be implemented
-  //if((sockfd = socket())
+  if((sockfd = socket(PF_INET, SOCK_DGRAM, 0)) < 0) {
+    perror("Connect open a socket");
+    exit(1);
+  }
+
+  memset(&srv_addr, 0, sizeof(srv_addr));
+  srv_addr.sin_family = AF_INET;
+  srv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
+  srv_addr.sin_port = htons(localPort);
+
+  if(bind(sockfd, (struct sockaddr *)&srv_addr, sizeof(srv_addr)) < 0) {
+    perror("Cannot bind the socket with port and IP address");
+    exit(1);
+  }
+
+  char buffer[kB];
+  int n;
+
+  while(true) {
+    unsigned int len = sizeof(clt_addr);
+    if((n = recvfrom(sockfd, buffer, kB, 0, (struct sockaddr *)&clt_addr, &len)) < 0) {
+      perror("Some error occurred  while receiving");
+      continue;
+    }
+
+    if(sendto(sockfd, buffer, n, 0, (struct sockaddr *)&clt_addr, sizeof(clt_addr)) < 0) {
+      perror("Cannot send a date");
+      continue;
+    }
+
+    write(STDOUT_FILENO, buffer, n);
+  }
 }
 
 

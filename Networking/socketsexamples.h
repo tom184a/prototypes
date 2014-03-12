@@ -12,8 +12,8 @@ class SocketsExamples {
 public:
   void runBasicHttpClient() const;
   void runBasicHttpServer() const;
-  void runSimpleUdpClient(short localPort, short remotePort) const;
-  void runSimpleUdpServer(short localPort, short remotePort) const;
+  void runSimpleUdpClient(short remotePort) const;
+  void runSimpleUdpServer(short localPort) const;
 };
 
 #endif /* SOCKETSEXAMPLES_H_ */
